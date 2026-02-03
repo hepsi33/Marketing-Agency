@@ -1,103 +1,118 @@
 import Link from 'next/link';
-import { Metadata } from 'next';
+import { notFound } from 'next/navigation';
 
-export const metadata: Metadata = {
-    title: 'Blog | Elevate',
-    description: 'Insights on digital marketing, SEO, and brand strategy.',
-};
+// Dummy data fetching - would be a real request in production
+async function getPost(slug: string) {
+    const posts: Record<string, { title: string; content: string; date: string; category: string }> = {
+        'modern-yuppie-tailoring': {
+            title: 'The Return of Modern Yuppie Tailoring',
+            date: 'Oct 20, 2024',
+            category: 'Trends',
+            content: `
+                <p>Sharp lines, double-breasted blazers, and high-waisted trousers are making a definitive comeback. The "Modern Yuppie" aesthetic isn't just about office wear; it's a statement of structured elegance and power.</p>
+                <h3>Defining the Look</h3>
+                <p>Think oversized yet tailored silhouettes. It's the intersection of 80s excess and 2020s minimalism. Neutrals like charcoal, cream, and navy dominate the palette.</p>
+                <h3>Why Now?</h3>
+                <p>After years of loungewear dominance, fashion is swinging back toward formality, but with a comfortable, urban edge.</p>
+            `
+        },
+        'eco-fabrics-copenhagen': {
+            title: 'Eco-Conscious Fabrics from Copenhagen',
+            date: 'Oct 15, 2024',
+            category: 'Sustainability',
+            content: `
+                <p>Copenhagen Fashion Week has set a new gold standard for sustainability. Designers are moving beyond organic cotton into lab-grown leathers and recycled ocean plastics.</p>
+                <h3>Innovative Materials</h3>
+                <p>From mushroom-based textiles to seaweed-dyed silks, the future of fashion is being grown in labs and harvested responsibly in the North.</p>
+                <h3>The Scandi Approach</h3>
+                <p>It's not just about the fabric; it's about the lifecycle. Circularity is the goal, ensuring every garment can be recycled or composted.</p>
+            `
+        },
+        'urban-street-style': {
+            title: 'Street Style 2024: Urban Chic',
+            date: 'Oct 05, 2024',
+            category: 'Style Guide',
+            content: `
+                <p>Street style this year is a masterclass in layering and texture. Technical fabrics are being paired with vintage knits to create a look that is both futuristic and nostalgic.</p>
+                <h3>Key Elements</h3>
+                <p>Cargo silhouettes remain strong, but they are becoming more refined. Statement outerwear—think floor-length puffers and vibrant trench coats—is the centerpiece of the season.</p>
+                <p>Accessories are bold: heavy-soled boots and structured crossbody bags complete the urban uniform.</p>
+            `
+        },
+        'capsule-wardrobe': {
+            title: 'Building the Perfect Capsule Wardrobe',
+            date: 'Sep 28, 2024',
+            category: 'Essentials',
+            content: `
+                <p>The secret to effortless style is a well-curated capsule wardrobe. By focusing on quality over quantity, you can create dozens of outfits from just a few key pieces.</p>
+                <h3>The 10 Essentials</h3>
+                <p>Start with a structured blazer, a perfect pair of dark denim, a crisp white shirt, and high-quality boots. These pieces form the foundation of any versatile wardrobe.</p>
+                <h3>Mixing and Matching</h3>
+                <p>Focus on a cohesive color palette. When every piece works together, getting dressed in the morning becomes a creative joy rather than a chore.</p>
+            `
+        }
+    };
 
-const posts = [
-    {
-        slug: 'modern-yuppie-tailoring',
-        title: 'The Return of Modern Yuppie Tailoring',
-        excerpt: 'Sharp lines, power suits, and the new rules of corporate chic.',
-        date: 'Oct 20, 2024',
-        category: 'Trends',
-        readTime: '4 min read'
-    },
-    {
-        slug: 'eco-fabrics-copenhagen',
-        title: 'Eco-Conscious Fabrics from Copenhagen',
-        excerpt: 'How Scandinavian design is leading the sustainable fashion revolution.',
-        date: 'Oct 15, 2024',
-        category: 'Sustainability',
-        readTime: '5 min read'
-    },
-    {
-        slug: 'urban-street-style',
-        title: 'Street Style 2024: Urban Chic',
-        excerpt: 'A curated look at the defining streetwear moments of the season.',
-        date: 'Oct 05, 2024',
-        category: 'Style Guide',
-        readTime: '6 min read'
-    },
-    {
-        slug: 'capsule-wardrobe',
-        title: 'Building the Perfect Capsule Wardrobe',
-        excerpt: 'Minimal effort, maximum impact. The essentials you actually need.',
-        date: 'Sep 28, 2024',
-        category: 'Essentials',
-        readTime: '3 min read'
+    return posts[slug] || null;
+}
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
+    const slug = (await params).slug;
+    const post = await getPost(slug);
+    if (!post) return { title: 'Post Not Found' };
+    return { title: `${post.title} | Elevate Blog` };
+}
+
+export default async function BlogPost({ params }: { params: Promise<{ slug: string }> }) {
+    const slug = (await params).slug;
+    const post = await getPost(slug);
+
+    if (!post) {
+        notFound();
     }
-];
 
-export default function BlogListing() {
     return (
-        <main style={{ paddingTop: '120px', paddingBottom: '6rem' }}>
-            <div className="container">
-                <div style={{ textAlign: 'center', marginBottom: '5rem' }}>
-                    <h1 className="text-gradient animate-fade-in" style={{ fontSize: '3.5rem', marginBottom: '1rem' }}>
-                        Insights & Ideas
-                    </h1>
-                    <p className="animate-fade-in" style={{ fontSize: '1.25rem', color: '#ccc', animationDelay: '0.1s' }}>
-                        Thoughts on the changing digital landscape.
-                    </p>
-                </div>
-
-                <div style={{
-                    display: 'grid',
-                    gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))',
-                    gap: '2.5rem'
+        <article style={{ paddingTop: '120px', paddingBottom: '6rem' }}>
+            <div className="container" style={{ maxWidth: '800px' }}>
+                <Link href="/blog" style={{
+                    display: 'inline-block',
+                    marginBottom: '2rem',
+                    color: 'var(--primary)',
+                    fontSize: '0.9rem',
+                    fontWeight: 600
                 }}>
-                    {posts.map((post, index) => (
-                        <Link href={`/blog/${post.slug}`} key={post.slug} className="glass-panel animate-fade-in" style={{
-                            display: 'block',
-                            padding: '2.5rem',
-                            borderRadius: 'var(--radius-md)',
-                            border: '1px solid var(--border)',
-                            transition: 'transform 0.3s ease, border-color 0.3s ease',
-                            animationDelay: `${0.1 + index * 0.1}s`,
-                            textDecoration: 'none'
-                        }}>
-                            <div style={{
-                                display: 'flex',
-                                justifyContent: 'space-between',
-                                marginBottom: '1rem',
-                                fontSize: '0.85rem',
-                                color: 'var(--primary)',
-                                fontWeight: 600,
-                                textTransform: 'uppercase',
-                                letterSpacing: '0.05em'
-                            }}>
-                                <span>{post.category}</span>
-                                <span style={{ color: '#666', fontWeight: 400 }}>{post.readTime}</span>
-                            </div>
+                    ← Back to Insights
+                </Link>
 
-                            <h2 style={{ fontSize: '1.75rem', marginBottom: '1rem', lineHeight: '1.3' }}>
-                                {post.title}
-                            </h2>
+                <header style={{ marginBottom: '3rem' }}>
+                    <div style={{
+                        color: 'var(--secondary)',
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.05em',
+                        fontWeight: 700,
+                        fontSize: '0.9rem',
+                        marginBottom: '1rem'
+                    }}>
+                        {post.category}
+                    </div>
+                    <h1 className="text-gradient" style={{ fontSize: '3rem', marginBottom: '1.5rem', lineHeight: '1.1' }}>
+                        {post.title}
+                    </h1>
+                    <div style={{ color: '#666' }}>Published on {post.date}</div>
+                </header>
 
-                            <p style={{ color: '#aaa', marginBottom: '1.5rem', lineHeight: '1.6' }}>
-                                {post.excerpt}
-                            </p>
+                <div className="prose" dangerouslySetInnerHTML={{ __html: post.content }} style={{
+                    fontSize: '1.15rem',
+                    lineHeight: '1.8',
+                    color: '#ddd'
+                }} />
 
-                            <div style={{ fontSize: '0.9rem', color: '#666' }}>
-                                {post.date}
-                            </div>
-                        </Link>
-                    ))}
-                </div>
+                <style dangerouslySetInnerHTML={{
+                    __html: `
+                .prose p { margin-bottom: 1.5rem; }
+                .prose h3 { font-size: 1.75rem; margin-top: 2.5rem; margin-bottom: 1rem; color: var(--foreground); }
+                `}} />
             </div>
-        </main>
+        </article>
     );
 }

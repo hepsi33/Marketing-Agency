@@ -20,9 +20,11 @@ export async function POST(request: Request) {
         }
 
         // 1. Send Welcome Email to Subscriber
-        // NOTE: In Resend Sandbox mode, this ONLY works if the 'to' address is your account email.
+        // NOTE: In Resend Sandbox mode, 'from' MUST be exactly 'onboarding@resend.dev'
+        // and 'to' MUST be your account email address.
+        console.log('Attempting to send welcome email to:', email);
         const { data: welcomeData, error: welcomeError } = await resend.emails.send({
-            from: 'Hepsi <onboarding@resend.dev>',
+            from: 'onboarding@resend.dev',
             to: [email],
             subject: 'Welcome to the Hepsi Family!',
             html: `
@@ -34,20 +36,32 @@ export async function POST(request: Request) {
             `,
         });
 
+        if (welcomeError) {
+            console.error('Welcome Email Error Details:', JSON.stringify(welcomeError, null, 2));
+        } else {
+            console.log('Welcome Email Sent Successfully:', welcomeData?.id);
+        }
+
         // 2. Send Notification to Owner (hepsikumar333@gmail.com)
-        // This ensures YOU get an email every time someone signs up.
-        await resend.emails.send({
-            from: 'Hepsi Signup Alert <onboarding@resend.dev>',
+        console.log('Attempting to send signup alert to owner...');
+        const { data: alertData, error: alertError } = await resend.emails.send({
+            from: 'onboarding@resend.dev',
             to: ['hepsikumar333@gmail.com'],
             subject: 'New Newsletter Signup!',
             html: `<p>New user signed up: <strong>${email}</strong></p>`,
         });
 
-        if (welcomeError) {
-            console.error('Welcome Email Error:', welcomeError);
+        if (alertError) {
+            console.error('Owner Alert Error Details:', JSON.stringify(alertError, null, 2));
+        } else {
+            console.log('Owner Alert Sent Successfully:', alertData?.id);
         }
 
-        return NextResponse.json({ success: true, data: welcomeData });
+        return NextResponse.json({
+            success: true,
+            welcomeId: welcomeData?.id,
+            alertId: alertData?.id
+        });
     } catch (err) {
         const error = err as Error;
         console.error('Email API Route Error:', error);

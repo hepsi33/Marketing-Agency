@@ -1,18 +1,39 @@
-export const dynamic = 'force-dynamic';
-
 import { Resend } from 'resend';
-// ... rest of your code import { Resend } from 'resend';
 import { NextResponse } from 'next/server';
 
+// Forces Next.js to treat this as a dynamic route (skips build-time checks)
 export const dynamic = 'force-dynamic';
 
-export async function POST(request: Request) {
-    const apiKey = process.env.RESEND_API_KEY;
+export async function POST(req) {
+  const apiKey = process.env.RESEND_API_KEY;
 
-    if (!apiKey) {
-        return NextResponse.json({ error: "RESEND_API_KEY is not set" }, { status: 500 });
+  // Extra safety check
+  if (!apiKey) {
+    console.error("Critical: RESEND_API_KEY is missing from environment variables.");
+    return NextResponse.json({ error: "Internal Server Configuration Error" }, { status: 500 });
+  }
+
+  const resend = new Resend(apiKey);
+
+  try {
+    const { email, name } = await req.json();
+
+    const { data, error } = await resend.emails.send({
+      from: 'Hepsi <onboarding@resend.dev>', // Change to your verified domain later
+      to: [email],
+      subject: 'Welcome to the Hepsi Collective ✨',
+      html: `<strong>Hi ${name || 'Trendsetter'}!</strong><p>Thanks for joining us.</p>`,
+    });
+
+    if (error) {
+      return NextResponse.json({ error }, { status: 400 });
     }
 
+    return NextResponse.json({ success: true, data });
+  } catch (error) {
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+}
     const resend = new Resend(apiKey);
 
     try {
@@ -62,4 +83,5 @@ export async function POST(request: Request) {
         return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
     }
 }
+
 

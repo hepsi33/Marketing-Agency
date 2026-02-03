@@ -5,13 +5,17 @@ import Link from 'next/link';
 export default function Navbar() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isScrolled, setIsScrolled] = useState(false);
+    const [mounted, setMounted] = useState(false);
 
     // Add scroll listener
     useEffect(() => {
+        setMounted(true);
         const handleScroll = () => {
             setIsScrolled(window.scrollY > 20);
         };
         window.addEventListener('scroll', handleScroll);
+        // Set initial state Correctly
+        handleScroll();
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
@@ -21,10 +25,10 @@ export default function Navbar() {
         left: 0,
         width: '100%',
         zIndex: 100,
-        backgroundColor: isScrolled ? 'rgba(3, 3, 3, 0.7)' : 'transparent',
-        backdropFilter: isScrolled ? 'blur(15px)' : 'none',
-        WebkitBackdropFilter: isScrolled ? 'blur(15px)' : 'none',
-        borderBottom: isScrolled ? '1px solid var(--glass-border)' : '1px solid transparent',
+        backgroundColor: (mounted && isScrolled) ? 'rgba(3, 3, 3, 0.7)' : 'transparent',
+        backdropFilter: (mounted && isScrolled) ? 'blur(15px)' : 'none',
+        WebkitBackdropFilter: (mounted && isScrolled) ? 'blur(15px)' : 'none',
+        borderBottom: (mounted && isScrolled) ? '1px solid var(--glass-border)' : '1px solid transparent',
         transition: 'all 0.3s ease',
     };
 

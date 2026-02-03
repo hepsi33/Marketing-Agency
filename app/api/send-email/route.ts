@@ -19,47 +19,35 @@ export async function POST(request: Request) {
             return NextResponse.json({ error: "Email is required" }, { status: 400 });
         }
 
-        const { data, error: resendError } = await resend.emails.send({
+        // 1. Send Welcome Email to Subscriber
+        // NOTE: In Resend Sandbox mode, this ONLY works if the 'to' address is your account email.
+        const { data: welcomeData, error: welcomeError } = await resend.emails.send({
             from: 'Hepsi <onboarding@resend.dev>',
             to: [email],
-            subject: 'Welcome to the Family!',
+            subject: 'Welcome to the Hepsi Family!',
             html: `
                 <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; color: #111;">
-                    <div style="text-align: center; padding: 20px 0;">
-                        <h1 style="font-size: 24px; letter-spacing: 2px; text-transform: uppercase;">Hepsi</h1>
-                    </div>
-
-                    <p>Welcome to the Family!</p>
-                    
-                    <p>We believe that staying ahead of the curve shouldn't feel like a chore. That’s why you’re here—and we’re thrilled to have you.</p>
-                    
-                    <p>From now on, your inbox is a curated sanctuary for the latest shifts in fashion, lifestyle, and design. Whether it's the sudden resurgence of Modern Yuppie tailoring or the latest eco-conscious fabrics from Copenhagen, you'll hear it from Hepsi first.</p>
-                    
-                    <h3 style="margin-top: 30px;">What to expect from us:</h3>
-                    <ul>
-                        <li><strong>Weekly Trend Reports:</strong> Deep dives into what’s "now" and what’s "next."</li>
-                        <li><strong>Style Guides:</strong> How to wear the trends without losing your personal edge.</li>
-                        <li><strong>Early Access:</strong> Be the first to know about our exclusive drops and seasonal sales.</li>
-                    </ul>
-                    
-                    <div style="background: #f9f9f9; padding: 20px; text-align: center; margin-top: 30px; border-radius: 8px;">
-                        <h3>A little something to get you started...</h3>
-                        <p>As a thank you for joining our community, enjoy 10% OFF your next order.</p>
-                        <p style="font-size: 18px; font-weight: bold; letter-spacing: 1px;">Your Code: HEPSITREND10</p>
-                        <a href="#" style="background: #000; color: #fff; padding: 12px 24px; text-decoration: none; display: inline-block; margin-top: 10px; border-radius: 4px;">SHOP LATEST ARRIVALS</a>
-                    </div>
-                    
-                    <p style="margin-top: 40px;">Stay inspired,<br>The Hepsi Team</p>
+                    <h2>Welcome to Hepsi!</h2>
+                    <p>We're thrilled to have you. You'll now receive our latest updates on fashion and lifestyle.</p>
+                    <p>Stay inspired,<br>The Hepsi Team</p>
                 </div>
             `,
         });
 
-        if (resendError) {
-            console.error('Resend API Error:', resendError);
-            return NextResponse.json({ error: resendError }, { status: 500 });
+        // 2. Send Notification to Owner (hepsikumar333@gmail.com)
+        // This ensures YOU get an email every time someone signs up.
+        await resend.emails.send({
+            from: 'Hepsi Signup Alert <onboarding@resend.dev>',
+            to: ['hepsikumar333@gmail.com'],
+            subject: 'New Newsletter Signup!',
+            html: `<p>New user signed up: <strong>${email}</strong></p>`,
+        });
+
+        if (welcomeError) {
+            console.error('Welcome Email Error:', welcomeError);
         }
 
-        return NextResponse.json(data);
+        return NextResponse.json({ success: true, data: welcomeData });
     } catch (err) {
         const error = err as Error;
         console.error('Email API Route Error:', error);

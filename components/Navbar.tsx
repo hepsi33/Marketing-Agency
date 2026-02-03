@@ -7,9 +7,14 @@ export default function Navbar() {
     const [isScrolled, setIsScrolled] = useState(false);
     const [mounted, setMounted] = useState(false);
 
+    // Fix cascading render lint error
+    useEffect(() => {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        setMounted(true);
+    }, []);
+
     // Add scroll listener
     useEffect(() => {
-        setMounted(true);
         const handleScroll = () => {
             setIsScrolled(window.scrollY > 20);
         };

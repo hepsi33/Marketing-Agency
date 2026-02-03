@@ -15,7 +15,11 @@ export async function POST(request: Request) {
     try {
         const { email } = await request.json();
 
-        const { data, error } = await resend.emails.send({
+        if (!email) {
+            return NextResponse.json({ error: "Email is required" }, { status: 400 });
+        }
+
+        const { data, error: resendError } = await resend.emails.send({
             from: 'Hepsi <onboarding@resend.dev>',
             to: [email],
             subject: 'Welcome to the Family!',
@@ -50,12 +54,17 @@ export async function POST(request: Request) {
             `,
         });
 
-        if (error) {
-            return NextResponse.json({ error }, { status: 500 });
+        if (resendError) {
+            console.error('Resend API Error:', resendError);
+            return NextResponse.json({ error: resendError }, { status: 500 });
         }
 
         return NextResponse.json(data);
-    } catch (error) {
-        return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    } catch (err: any) {
+        console.error('Email API Route Error:', err);
+        return NextResponse.json({
+            error: 'Internal Server Error',
+            details: err.message
+        }, { status: 500 });
     }
 }

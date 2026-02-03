@@ -20,11 +20,9 @@ export async function POST(request: Request) {
         }
 
         // 1. Send Welcome Email to Subscriber
-        // NOTE: In Resend Sandbox mode, 'from' MUST be exactly 'onboarding@resend.dev'
-        // and 'to' MUST be your account email address.
         console.log('Attempting to send welcome email to:', email);
         const { data: welcomeData, error: welcomeError } = await resend.emails.send({
-            from: 'onboarding@resend.dev',
+            from: 'Hepsi <newsletter@hepsi.com>',
             to: [email],
             subject: 'Welcome to the Hepsi Family!',
             html: `
@@ -45,7 +43,7 @@ export async function POST(request: Request) {
         // 2. Send Notification to Owner (hepsikumar333@gmail.com)
         console.log('Attempting to send signup alert to owner...');
         const { data: alertData, error: alertError } = await resend.emails.send({
-            from: 'onboarding@resend.dev',
+            from: 'Hepsi Alert <newsletter@hepsi.com>',
             to: ['hepsikumar333@gmail.com'],
             subject: 'New Newsletter Signup!',
             html: `<p>New user signed up: <strong>${email}</strong></p>`,

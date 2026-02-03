@@ -60,11 +60,12 @@ export async function POST(request: Request) {
         }
 
         return NextResponse.json(data);
-    } catch (err: any) {
-        console.error('Email API Route Error:', err);
+    } catch (err) {
+        const error = err as Error;
+        console.error('Email API Route Error:', error);
         return NextResponse.json({
             error: 'Internal Server Error',
-            details: err.message
+            details: error.message
         }, { status: 500 });
     }
 }

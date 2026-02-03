@@ -61,14 +61,14 @@ async function getPost(slug: string) {
     return POSTS_DATA[slug] || null;
 }
 
-export async function generateMetadata({ params }: { params: any }) {
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
     const { slug } = await params;
     const post = await getPost(slug);
     if (!post) return { title: 'Post Not Found' };
     return { title: `${post.title} | Elevate Blog` };
 }
 
-export default async function BlogPost({ params }: { params: any }) {
+export default async function BlogPost({ params }: { params: Promise<{ slug: string }> }) {
     const { slug } = await params;
     const post = await getPost(slug);
 

@@ -6,9 +6,9 @@ export default function Careers() {
     ];
 
     return (
-        <main className="container" style={{ padding: '8rem 1.5rem', minHeight: '80vh' }}>
-            <h1 className="text-gradient" style={{ fontSize: '3.5rem', marginBottom: '1rem' }}>Join the Team</h1>
-            <p style={{ fontSize: '1.25rem', color: '#666', marginBottom: '4rem' }}>
+        <main className="container" style={{ padding: 'clamp(5rem, 15vh, 8rem) 1rem', minHeight: '80vh' }}>
+            <h1 className="text-gradient" style={{ fontSize: 'clamp(2.5rem, 8vw, 3.5rem)', marginBottom: '1rem' }}>Join the Team</h1>
+            <p style={{ fontSize: '1.125rem', color: '#888', marginBottom: '4rem' }}>
                 Help us build the future of digital marketing.
             </p>
 

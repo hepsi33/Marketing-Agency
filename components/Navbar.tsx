@@ -1,14 +1,31 @@
+'use client';
+import { CSSProperties, useState, useEffect } from 'react';
 import Link from 'next/link';
-import { CSSProperties } from 'react';
 
 export default function Navbar() {
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [isScrolled, setIsScrolled] = useState(false);
+
+    // Add scroll listener
+    useEffect(() => {
+        const handleScroll = () => {
+            setIsScrolled(window.scrollY > 20);
+        };
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
+
     const navStyle: CSSProperties = {
         position: 'fixed',
         top: 0,
         left: 0,
         width: '100%',
         zIndex: 100,
-        borderBottom: '1px solid var(--glass-border)',
+        backgroundColor: isScrolled ? 'rgba(3, 3, 3, 0.7)' : 'transparent',
+        backdropFilter: isScrolled ? 'blur(15px)' : 'none',
+        WebkitBackdropFilter: isScrolled ? 'blur(15px)' : 'none',
+        borderBottom: isScrolled ? '1px solid var(--glass-border)' : '1px solid transparent',
+        transition: 'all 0.3s ease',
     };
 
     const containerStyle: CSSProperties = {
@@ -26,13 +43,17 @@ export default function Navbar() {
         transition: 'color 0.2s, opacity 0.2s',
     };
 
+    const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+
     return (
         <nav className="glass-panel" style={navStyle}>
             <div className="container" style={containerStyle}>
-                <Link href="/" style={{ fontSize: '1.5rem', fontWeight: 700, letterSpacing: '-0.03em' }}>
+                <Link href="/" style={{ fontSize: '1.5rem', fontWeight: 700, letterSpacing: '-0.03em', zIndex: 101 }}>
                     Elevate<span style={{ color: 'var(--primary)' }}>.</span>
                 </Link>
-                <div style={{ display: 'flex', alignItems: 'center' }}>
+
+                {/* Desktop Menu */}
+                <div className="desktop-only" style={{ alignItems: 'center' }}>
                     <Link href="/" style={linkStyle} className="nav-link">Home</Link>
                     <Link href="#services" style={linkStyle} className="nav-link">Services</Link>
                     <Link href="#work" style={linkStyle} className="nav-link">Work</Link>
@@ -49,6 +70,55 @@ export default function Navbar() {
                         Get Started
                     </Link>
                 </div>
+
+                {/* Mobile Toggle */}
+                <button
+                    className="mobile-only"
+                    onClick={toggleMenu}
+                    aria-label="Toggle menu"
+                    style={{
+                        zIndex: 101,
+                        color: 'var(--foreground)',
+                        fontSize: '1.5rem'
+                    }}
+                >
+                    {isMenuOpen ? '✕' : '☰'}
+                </button>
+
+                {/* Mobile Menu Overlay */}
+                {isMenuOpen && (
+                    <div style={{
+                        position: 'fixed',
+                        top: 0,
+                        left: 0,
+                        width: '100%',
+                        height: '100vh',
+                        background: 'var(--background)',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        gap: '2rem',
+                        zIndex: 100,
+                        animation: 'fadeIn 0.3s ease forwards'
+                    }}>
+                        <Link href="/" onClick={toggleMenu} style={{ fontSize: '1.5rem', fontWeight: 600 }}>Home</Link>
+                        <Link href="#services" onClick={toggleMenu} style={{ fontSize: '1.5rem', fontWeight: 600 }}>Services</Link>
+                        <Link href="#work" onClick={toggleMenu} style={{ fontSize: '1.5rem', fontWeight: 600 }}>Work</Link>
+                        <Link href="/blog" onClick={toggleMenu} style={{ fontSize: '1.5rem', fontWeight: 600 }}>Blog</Link>
+                        <Link href="#contact" onClick={toggleMenu}
+                            style={{
+                                fontSize: '1.5rem',
+                                fontWeight: 700,
+                                padding: '1rem 2rem',
+                                background: 'var(--primary-gradient)',
+                                borderRadius: 'var(--radius-full)',
+                                color: 'white'
+                            }}>
+                            Get Started
+                        </Link>
+                    </div>
+                )}
             </div>
         </nav>
     );

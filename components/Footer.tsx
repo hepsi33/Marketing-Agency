@@ -31,8 +31,8 @@ export default function Footer() {
     const footerStyle: CSSProperties = {
         background: 'var(--surface)',
         borderTop: '1px solid var(--border)',
-        padding: '6rem 0 2rem',
-        marginTop: '6rem',
+        padding: 'clamp(3rem, 10vh, 6rem) 0 2rem',
+        marginTop: 'clamp(3rem, 10vh, 6rem)',
     };
 
     const gridStyle: CSSProperties = {

@@ -37,6 +37,12 @@
 
   --transition-fast: 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
   --transition-normal: 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+
+  /* Responsive Font Sizes */
+  --h1: clamp(2.5rem, 8vw, 4.5rem);
+  --h2: clamp(2rem, 6vw, 3.5rem);
+  --h3: clamp(1.5rem, 4vw, 2.5rem);
+  --body: clamp(1rem, 2vw, 1.125rem);
 }
 
 * {
@@ -52,6 +58,7 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-sans);
+  font-size: var(--body);
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
 }
@@ -70,6 +77,18 @@ button {
 }
 
 /* Typography Utilities */
+h1 {
+  font-size: var(--h1);
+}
+
+h2 {
+  font-size: var(--h2);
+}
+
+h3 {
+  font-size: var(--h3);
+}
+
 h1,
 h2,
 h3,
@@ -96,6 +115,12 @@ h6 {
   padding: 0 1.5rem;
 }
 
+@media (max-width: 768px) {
+  .container {
+    padding: 0 1rem;
+  }
+}
+
 /* Glassmorphism Utility */
 .glass-panel {
   background: var(--surface);
@@ -119,4 +144,23 @@ h6 {
 
 .animate-fade-in {
   animation: fadeIn 0.6s ease forwards;
+}
+
+/* Visibility Utilities */
+.mobile-only {
+  display: none;
+}
+
+.desktop-only {
+  display: flex;
+}
+
+@media (max-width: 768px) {
+  .mobile-only {
+    display: flex;
+  }
+
+  .desktop-only {
+    display: none;
+  }
 }

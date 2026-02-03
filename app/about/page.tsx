@@ -1,8 +1,8 @@
 export default function About() {
     return (
-        <main className="container" style={{ padding: '8rem 1.5rem', minHeight: '80vh' }}>
-            <h1 className="text-gradient" style={{ fontSize: '3.5rem', marginBottom: '2rem' }}>About Us</h1>
-            <p style={{ fontSize: '1.25rem', lineHeight: '1.8', maxWidth: '800px', marginBottom: '4rem', color: '#444' }}>
+        <main className="container" style={{ padding: 'clamp(5rem, 15vh, 8rem) 1rem', minHeight: '80vh' }}>
+            <h1 className="text-gradient" style={{ fontSize: 'clamp(2.5rem, 8vw, 3.5rem)', marginBottom: '2rem' }}>About Us</h1>
+            <p style={{ fontSize: '1.125rem', lineHeight: '1.8', maxWidth: '800px', marginBottom: '4rem', color: '#aaa' }}>
                 At Elevate, we believe in the power of abstract thinking to solve concrete problems.
                 Founded in 2024, our mission is to blend data science with artistic expression,
                 creating marketing campaigns that are as effective as they are beautiful.

@@ -1,9 +1,9 @@
 export default function Contact() {
     return (
-        <main className="container" style={{ padding: '8rem 1.5rem', minHeight: '80vh' }}>
+        <main className="container" style={{ padding: 'clamp(5rem, 15vh, 8rem) 1rem', minHeight: '80vh' }}>
             <div style={{ maxWidth: '600px', margin: '0 auto', textAlign: 'center' }}>
-                <h1 className="text-gradient" style={{ fontSize: '3.5rem', marginBottom: '2rem' }}>Get in Touch</h1>
-                <p style={{ fontSize: '1.25rem', color: '#666', marginBottom: '4rem' }}>
+                <h1 className="text-gradient" style={{ fontSize: 'clamp(2.5rem, 8vw, 3.5rem)', marginBottom: '2rem' }}>Get in Touch</h1>
+                <p style={{ fontSize: '1.125rem', color: '#888', marginBottom: '4rem' }}>
                     Ready to elevate your brand? We&apos;d love to hear from you.
                 </p>
 

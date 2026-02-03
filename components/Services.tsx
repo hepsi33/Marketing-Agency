@@ -28,8 +28,8 @@ export default function Services() {
 
                 <div style={{
                     display: 'grid',
-                    gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-                    gap: '2rem'
+                    gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+                    gap: 'clamp(1.5rem, 3vw, 2.5rem)'
                 }}>
                     {services.map((service, index) => (
                         <div key={index} className="glass-panel" style={{

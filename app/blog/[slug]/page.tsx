@@ -77,7 +77,7 @@ export default async function BlogPost({ params }: { params: any }) {
     }
 
     return (
-        <article style={{ paddingTop: '120px', paddingBottom: '6rem' }}>
+        <article style={{ paddingTop: 'clamp(5rem, 15vh, 8rem)', paddingBottom: '6rem' }}>
             <div className="container" style={{ maxWidth: '800px' }}>
                 <Link href="/blog" style={{
                     display: 'inline-block',
@@ -89,21 +89,21 @@ export default async function BlogPost({ params }: { params: any }) {
                     ← Back to Insights
                 </Link>
 
-                <header style={{ marginBottom: '3rem' }}>
+                <header style={{ marginBottom: 'clamp(2rem, 5vh, 3rem)' }}>
                     <div style={{
                         color: 'var(--secondary)',
                         textTransform: 'uppercase',
                         letterSpacing: '0.05em',
                         fontWeight: 700,
-                        fontSize: '0.9rem',
+                        fontSize: '0.85rem',
                         marginBottom: '1rem'
                     }}>
                         {post.category}
                     </div>
-                    <h1 className="text-gradient" style={{ fontSize: '3rem', marginBottom: '1.5rem', lineHeight: '1.1' }}>
+                    <h1 className="text-gradient" style={{ fontSize: 'clamp(2rem, 6vw, 3rem)', marginBottom: '1.5rem', lineHeight: '1.1' }}>
                         {post.title}
                     </h1>
-                    <div style={{ color: '#666' }}>Published on {post.date}</div>
+                    <div style={{ color: '#666', fontSize: '0.95rem' }}>Published on {post.date}</div>
                 </header>
 
                 <div className="prose" dangerouslySetInnerHTML={{ __html: post.content }} style={{

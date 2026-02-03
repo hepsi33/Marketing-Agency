@@ -38,15 +38,15 @@ export default function Work() {
         <section id="work" style={{ padding: '8rem 0' }}>
             <div className="container">
                 <div style={{ marginBottom: '4rem' }}>
-                    <h2 className="text-gradient" style={{ 
-                        fontSize: '3.5rem', 
+                    <h2 className="text-gradient" style={{
+                        fontSize: '3.5rem',
                         marginBottom: '1rem',
                         letterSpacing: '-0.03em'
                     }}>
                         Selected Work
                     </h2>
-                    <p style={{ 
-                        color: 'rgba(255,255,255,0.6)', 
+                    <p style={{
+                        color: 'rgba(255,255,255,0.6)',
                         fontSize: '1.2rem',
                         maxWidth: '600px'
                     }}>
@@ -56,22 +56,22 @@ export default function Work() {
 
                 <div style={{
                     display: 'grid',
-                    gridTemplateColumns: 'repeat(auto-fit, minmax(450px, 1fr))',
-                    gap: '2.5rem'
+                    gridTemplateColumns: 'repeat(auto-fit, minmax(clamp(280px, 40vw, 450px), 1fr))',
+                    gap: 'clamp(1.5rem, 3vw, 2.5rem)'
                 }}>
                     {projects.map((project, index) => (
                         <div key={index} className="glass-panel" style={{
-                            padding: '3rem',
+                            padding: 'clamp(1.5rem, 5vw, 3rem)',
                             borderRadius: 'var(--radius-md)',
                             position: 'relative',
                             overflow: 'hidden',
                             display: 'flex',
                             flexDirection: 'column',
                             justifyContent: 'space-between',
-                            minHeight: '400px',
+                            minHeight: 'clamp(350px, 50vh, 450px)',
                             transition: 'transform 0.3s ease, border-color 0.3s ease'
                         }}>
-                             {/* Abstract Background */}
+                            {/* Abstract Background */}
                             <div style={{
                                 position: 'absolute',
                                 top: 0,
@@ -84,18 +84,18 @@ export default function Work() {
                             }} />
 
                             <div style={{ position: 'relative', zIndex: 1 }}>
-                                <div style={{ 
-                                    display: 'flex', 
-                                    justifyContent: 'space-between', 
+                                <div style={{
+                                    display: 'flex',
+                                    justifyContent: 'space-between',
                                     alignItems: 'flex-start',
                                     marginBottom: '2rem'
                                 }}>
                                     <div>
-                                        <h3 style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>{project.client}</h3>
-                                        <span style={{ 
-                                            color: 'var(--primary)', 
-                                            textTransform: 'uppercase', 
-                                            fontSize: '0.875rem', 
+                                        <h3 style={{ fontSize: 'clamp(1.5rem, 4vw, 2rem)', marginBottom: '0.5rem' }}>{project.client}</h3>
+                                        <span style={{
+                                            color: 'var(--primary)',
+                                            textTransform: 'uppercase',
+                                            fontSize: '0.875rem',
                                             letterSpacing: '0.1em',
                                             fontWeight: 600
                                         }}>
@@ -111,10 +111,10 @@ export default function Work() {
                                         <span style={{ fontWeight: 700 }}>{project.result}</span>
                                     </div>
                                 </div>
-                                
-                                <p style={{ 
-                                    fontSize: '1.125rem', 
-                                    lineHeight: 1.6, 
+
+                                <p style={{
+                                    fontSize: '1.125rem',
+                                    lineHeight: 1.6,
                                     color: 'rgba(255,255,255,0.8)',
                                     marginBottom: '3rem'
                                 }}>
@@ -122,8 +122,8 @@ export default function Work() {
                                 </p>
                             </div>
 
-                            <div style={{ 
-                                position: 'relative', 
+                            <div style={{
+                                position: 'relative',
                                 zIndex: 1,
                                 display: 'flex',
                                 gap: '0.75rem',

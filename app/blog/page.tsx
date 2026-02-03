@@ -43,13 +43,13 @@ const posts = [
 
 export default function BlogListing() {
     return (
-        <main style={{ paddingTop: '120px', paddingBottom: '6rem' }}>
+        <main style={{ paddingTop: 'clamp(5rem, 15vh, 8rem)', paddingBottom: '6rem' }}>
             <div className="container">
-                <div style={{ textAlign: 'center', marginBottom: '5rem' }}>
-                    <h1 className="text-gradient animate-fade-in" style={{ fontSize: '3.5rem', marginBottom: '1rem' }}>
+                <div style={{ textAlign: 'center', marginBottom: 'clamp(3rem, 10vh, 5rem)' }}>
+                    <h1 className="text-gradient animate-fade-in" style={{ fontSize: 'clamp(2.5rem, 8vw, 3.5rem)', marginBottom: '1rem' }}>
                         Insights & Ideas
                     </h1>
-                    <p className="animate-fade-in" style={{ fontSize: '1.25rem', color: '#ccc', animationDelay: '0.1s' }}>
+                    <p className="animate-fade-in" style={{ fontSize: '1.125rem', color: '#888', animationDelay: '0.1s' }}>
                         Thoughts on the changing digital landscape.
                     </p>
                 </div>

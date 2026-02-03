@@ -3,7 +3,7 @@ import Link from 'next/link';
 export default function Hero() {
     return (
         <section style={{
-            padding: '8rem 0 6rem',
+            padding: 'clamp(6rem, 15vh, 10rem) 0 clamp(4rem, 10vh, 8rem)',
             textAlign: 'center',
             background: 'radial-gradient(ellipse at center, var(--primary-glow) 0%, transparent 70%)',
         }}>
